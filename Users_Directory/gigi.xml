@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+  <name name="John" />
+  <surname surname="Dog" />
+  <birthday birthday="23.12.1979" />
+  <familyStatus familyStatus="MARRIED" />
+  <profession profession="no" />
+  <login login="gigi" />
+  <password password="123" />
+  <email email="no" />
+</user>

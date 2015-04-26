@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="jdatepicker-1.3.41">
+    <CLASSES>
+      <root url="jar://D:/Documents/Загрузяшки/jdatepicker-1.3.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jdatepicker-1.3.4(1).jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <excluded>
+      <root url="jar://D:/Documents/Загрузяшки/jdatepicker-1.3.4.jar!/org/jdatepicker" />
+    </excluded>
+  </library>
+</component>

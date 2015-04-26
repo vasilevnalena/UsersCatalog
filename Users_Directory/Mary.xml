@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+  <name name="Mary" />
+  <surname surname="Popins" />
+  <birthday birthday="03.03.1987" />
+  <familyStatus familyStatus="MARRIED" />
+  <profession profession="teacher" />
+  <login login="mary" />
+  <password password="123" />
+  <email email="Mary@mail.com" />
+</user>
