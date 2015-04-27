@@ -1,5 +1,11 @@
 *.class
 
+#currentProject
+Users_Directory/.idea/
+Users_Directory/jdom-2.0.6/
+Users_Directory/out/
+Users_Directory/*.iml
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
