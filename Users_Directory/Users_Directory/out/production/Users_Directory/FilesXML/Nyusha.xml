@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+  <name name="Nyusha" />
+  <surname surname="Nyushkina" />
+  <birthday birthday="02.08.2009" />
+  <familyStatus familyStatus="NOT_MARRIED" />
+  <profession profession="no" />
+  <login login="nyusha" />
+  <password password="444" />
+  <email email="nyusha@mail.ru" />
+</user>

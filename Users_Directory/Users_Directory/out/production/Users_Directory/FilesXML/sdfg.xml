@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+  <name name="alice" />
+  <surname surname="qwer" />
+  <birthday birthday="02.08.1983" />
+  <familyStatus familyStatus="MARRIED" />
+  <profession profession="qwer" />
+  <login login="sdfg" />
+  <password password="1234" />
+  <email email="qwer" />
+</user>

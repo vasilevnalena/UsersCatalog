@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+  <name name="1" />
+  <surname surname="2" />
+  <birthday birthday="01.01.0001" />
+  <familyStatus familyStatus="NOT_MARRIED" />
+  <profession profession="111" />
+  <login login="null" />
+  <password password="0" />
+  <email email="1" />
+</user>

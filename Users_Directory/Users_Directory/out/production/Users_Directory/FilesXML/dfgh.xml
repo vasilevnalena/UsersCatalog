@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+  <name name="Nikolay" />
+  <surname surname="ывап" />
+  <birthday birthday="01.04.1455" />
+  <familyStatus familyStatus="MARRIED" />
+  <profession profession="zxcvb" />
+  <login login="nikolay" />
+  <password password="34" />
+  <email email="werdf" />
+</user>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+  <name name="Khusainova" />
+  <surname surname="Alyona" />
+  <birthday birthday="04.04.1994" />
+  <familyStatus familyStatus="NOT_MARRIED" />
+  <profession profession="student" />
+  <login login="alena" />
+  <password password="123" />
+  <email email="vasilevnalena@gmail.com" />
+</user>

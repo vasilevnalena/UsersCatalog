@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+  <name name="kerry" />
+  <surname surname="white" />
+  <birthday birthday="01.02.0333" />
+  <familyStatus familyStatus="MARRIED" />
+  <profession profession="no" />
+  <login login="null" />
+  <password password="0" />
+  <email email="kerry@girl.com" />
+</user>

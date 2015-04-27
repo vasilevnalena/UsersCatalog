@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+  <name name="John" />
+  <surname surname="Constantine" />
+  <birthday birthday="06.06.0666" />
+  <familyStatus familyStatus="NOT_MARRIED" />
+  <profession profession="Exorcist" />
+  <login login="john" />
+  <password password="666" />
+  <email email="John@mail.exrst" />
+</user>
