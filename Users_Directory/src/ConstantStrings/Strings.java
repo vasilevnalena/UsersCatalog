@@ -21,8 +21,8 @@ public class Strings {
     private final String ENTER_EMAIL="Enter e-mail:";
     private final String NOTHING_NOT_CHOSE="You have not chosen nothing.";
     //private final String ENTER_NAME_XML="Enter name of document XML:";
-    private final String PATH_TO_THE_CATALOG="C:\\Users\\1231\\IdeaProjects\\Users_Directory\\src\\Catalog\\Catalog.xml";
-    private final String PATH_TO_THE_XML_FILES="C:\\Users\\1231\\IdeaProjects\\Users_Directory\\src\\FilesXML\\";
+    private final String PATH_TO_THE_CATALOG="src\\Catalog\\Catalog.bin";
+    private final String PATH_TO_THE_XML_FILES="src\\FilesXML\\";
     private final String CHOOSE_CHANGE_ATTRIBUTE = "If you want...\n" +
             "...to change user's name, to change choose 1,\n" +
             "...to change user's surname, choose 2,\n" +
