@@ -32,9 +32,9 @@ public class MainConsole implements Serializable{
  /*вызов главной консольки после успешной регистрации или авторизации*/
  public void start() throws Exception {
 
-    // catalog.writeCatalog(catalog.getUsers());//обновляем каталог перед закрытием
+    //catalog.writeCatalog(catalog.getUsers());//обновляем каталог перед закрытием
 
-     catalog.setUsers(catalog.readCatalog());//считывание каталога
+    catalog.setUsers(catalog.readCatalog());//считывание каталога
 
    BufferedReader buf = new BufferedReader(new InputStreamReader(System.in));
       chooseAction(buf);
@@ -66,4 +66,9 @@ public class MainConsole implements Serializable{
    }
    buf.close();
  }
+    public static void main(String[] args) throws Exception {
+
+        MainConsole authorization = new MainConsole();
+        authorization.start();
+    }
 }

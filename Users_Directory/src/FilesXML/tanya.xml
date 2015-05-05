@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+  <name name="tanya" />
+  <surname surname="avroseva" />
+  <birthday birthday="03.12.1985" />
+  <familyStatus familyStatus="NOT_MARRIED" />
+  <profession profession="logist" />
+  <login login="tanya" />
+  <password password="432" />
+  <email email="tanya@logist.ru" />
+</user>

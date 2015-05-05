@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+  <name name="galya" />
+  <surname surname="zalazaeva" />
+  <birthday birthday="19.03.1973" />
+  <familyStatus familyStatus="MARRIED" />
+  <profession profession="babysitter" />
+  <login login="galya" />
+  <password password="444" />
+  <email email="zaza@zaza.ru" />
+</user>

@@ -28,7 +28,7 @@ public class Catalog {
     /*считывание каталога*/
     public static Set<User> readCatalog() throws IOException, ClassNotFoundException {
 
-        //добавить проверку на пустой файл(Catalog.xml)
+        //добавить проверку на пустой файл(Catalog.bin)
         ObjectInputStream in = new ObjectInputStream(new
                 FileInputStream(constant.getPATH_TO_THE_CATALOG()));
         Set<User> values = (Set<User>) in.readObject();

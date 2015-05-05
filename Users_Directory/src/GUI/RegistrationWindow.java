@@ -2,6 +2,7 @@ package GUI;
 
 import ConstantStrings.Strings;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -15,14 +16,11 @@ public class RegistrationWindow extends JFrame {
     private  Strings message=new Strings();
     private static OperationsGUI authorizationAndRegistration=new OperationsGUI();
     final JFrame registrationPage=new JFrame("Registration Page");
-    static JTextField textLogin;//=new JTextField(50);
+    static JTextField textLogin;//new JTextField(50);
     static JTextField textPassword;//=new JPasswordField(50);
     private Box mainBox;
     private JLabel label;
     private JButton button;
-  //  public String login;//=textLogin.getText();
-   // public int password;//=Integer.parseInt(textPassword.getText());
-
 
     public static JTextField getTextLogin() {
         return textLogin;
@@ -42,18 +40,20 @@ public class RegistrationWindow extends JFrame {
         elementsFrameGUI.createLabel(label,"Enter login:",mainBox);
         textLogin=new JTextField(50);
         elementsFrameGUI.createTextField(textLogin,mainBox);
-        elementsFrameGUI.createSpace(5,mainBox);
+        elementsFrameGUI.createSpace(8,mainBox);
 
         elementsFrameGUI.createLabel(label,"Enter password:",mainBox);
         textPassword=new JPasswordField(50);
         elementsFrameGUI.createTextField(textPassword,mainBox);
-        elementsFrameGUI.createSpace(8,mainBox);
+        elementsFrameGUI.createSpace(12,mainBox);
 
         JButton enterButton=elementsFrameGUI.createButton(button,"Registration",mainBox);
+        enterButton.setMaximumSize(new Dimension(150, 35));
         elementsFrameGUI.createSpace(8,mainBox);
 
         registrationPage.setContentPane(mainBox);
-        registrationPage.pack();
+        registrationPage.setMinimumSize(new Dimension(300, 200));
+        // registrationPage.pack();
         registrationPage.setLocationRelativeTo(null);
         registrationPage.setVisible(true);
 
@@ -65,12 +65,12 @@ public class RegistrationWindow extends JFrame {
                             authorizationAndRegistration.checkNullTextField(textPassword.getText(),registrationPage)) {
                         try {
                             authorizationAndRegistration.registration(textLogin.getText(), Integer.parseInt(textPassword.getText()), registrationPage);
-                            registrationPage.dispose();
                         }catch(NumberFormatException ex) {
-                          JOptionPane.showMessageDialog(registrationPage,message.getINCORRECT_TYPE_OF_DATA_PASSWORD());
+                            JOptionPane.showMessageDialog(registrationPage,message.getINCORRECT_TYPE_OF_DATA_PASSWORD());
                         }
+                        registrationPage.dispose();
                     }
-                 } catch (IOException e1) {
+                } catch (IOException e1) {
                     e1.printStackTrace();
                 } catch (Exception e1) {
                     e1.printStackTrace();

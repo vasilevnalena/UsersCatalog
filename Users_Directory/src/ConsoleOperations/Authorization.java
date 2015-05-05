@@ -59,7 +59,6 @@ public class Authorization {
 
     /*авторизация пользователя*/
     public void authorization() throws Exception {
-
         BufferedReader buf = new BufferedReader(new InputStreamReader(System.in));
 
         enterLogin(buf);

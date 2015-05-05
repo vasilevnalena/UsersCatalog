@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Vector;
 
 /**
  * Created by 1231 on 13.04.2015.
@@ -17,7 +20,7 @@ import java.text.SimpleDateFormat;
 public class MainWindow extends JFrame implements ActionListener {
 
     private static DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-    private static RegistrationWindow registrationWindow=new RegistrationWindow();
+    private RegistrationWindow registrationWindow=new RegistrationWindow();
     public static JFrame mainWindow;
     private static JMenuBar menuBar;
     private static DeleteUserWindow deleteUserWindow=new DeleteUserWindow();
@@ -31,7 +34,7 @@ public class MainWindow extends JFrame implements ActionListener {
     };
     private static Catalog catalog=new Catalog();
     private static String[][] data;
-    static JTable table;// = new JTable(data, columnNames);
+    static JTable table;
 
     /*заполнение таблицы данными*/
     private static void fillTable() throws IOException, ClassNotFoundException, ParseException {
@@ -65,7 +68,7 @@ public class MainWindow extends JFrame implements ActionListener {
     /*создание менюшки */
     private void createMenu(){
         String[] item1={"Close"};
-        String[] item2={"Create user","Edit user's data","Delete user"};
+        String[] item2={"Create user","Edit user's data","Delete user","Refresh"};
         String[] item3={"Get help"};
 
         createButtonMenu("File", item1);
@@ -76,37 +79,40 @@ public class MainWindow extends JFrame implements ActionListener {
     }
 
     /*создание таблицы*/
-    private void createTable() throws ParseException, IOException, ClassNotFoundException {
+    public void createTable() throws ParseException, IOException, ClassNotFoundException {
 
         fillTable();
-        table = new JTable(data, columnNames);
-        table.setEnabled(false);
+        CatalogTableModel catalogTableModel=new CatalogTableModel(data, columnNames);
+        table = new JTable(catalogTableModel);
+        table.setRowSelectionAllowed(true);
+        table.setPreferredScrollableViewportSize(new Dimension(500, 350));
+        table.setAutoCreateRowSorter(true);
         JScrollPane scrollPane = new JScrollPane(table);
         mainWindow.getContentPane().add(scrollPane);
     }
 
+    /*операции для кнопок менюшки*/
     public void actionPerformed(ActionEvent e) {
         String command=e.getActionCommand();
         if (command=="Close") System.exit(0);
         if (command=="Create user"){
             try {
                 registrationWindow.registrationPage.dispose();
-                mainWindow.dispose();//для временного обновления таблицы
+               // mainWindow.dispose();//для временного обновления таблицы
                 registrationWindow.registrationWindow();
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
         }
         if(command=="Delete user"){
-            try {
-                deleteUserWindow.deleteUserWindow();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+           // try {
+               // deleteUserWindow.deleteUserWindow();
+
+          //  } catch (IOException e1) {
+              //  e1.printStackTrace();
+            //}
         }
-        if(command=="Edit user's data"){
-           ///...
-        }
+
     }
 
     /*создание главного окна */
@@ -118,8 +124,8 @@ public class MainWindow extends JFrame implements ActionListener {
         createTable();
         createMenu();
 
-        mainWindow.setPreferredSize(new Dimension(600, 400));
-        mainWindow.pack();
+        mainWindow.setMinimumSize(new Dimension(600,400));
+        mainWindow.setMaximumSize(new Dimension(800, 400));
         mainWindow.setLocationRelativeTo(null);
         mainWindow.setVisible(true);
     }

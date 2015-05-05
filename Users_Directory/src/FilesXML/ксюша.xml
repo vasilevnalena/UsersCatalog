@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+  <name name="ксюша" />
+  <surname surname="полторацкая" />
+  <birthday birthday="07.04.2002" />
+  <familyStatus familyStatus="NOT_MARRIED" />
+  <profession profession="студент" />
+  <login login="ксюша" />
+  <password password="477" />
+  <email email="ksyusha@nickname.ru" />
+</user>

@@ -5,15 +5,25 @@ import ConstantStrings.Strings;
 import ConsoleOperations.OperationsXML;
 import UsersData.User;
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.math.BigDecimal;
+import java.net.URL;
+import java.sql.*;
+import java.sql.Date;
+import java.text.ParseException;
+import java.util.*;
 
 /**
  * Created by 1231 on 22.04.2015.
  */
-public class DeleteUserWindow {
+public class DeleteUserWindow extends JFrame {
 
     private static Catalog catalog=new Catalog();
     private static ElementsFrameGUI elementsFrameGUI = new ElementsFrameGUI();
@@ -28,15 +38,46 @@ public class DeleteUserWindow {
     private static Strings message=new Strings();
     private static MainWindow mainWindow=new MainWindow();
 
+
+
+    private void removeUserInTable(User user) throws ParseException, IOException, ClassNotFoundException {
+        for (int i = 0; i < mainWindow.table.getRowCount(); i++) {
+                if (mainWindow.table.getModel().getValueAt(i, 0).equals(user.getName()) &&
+                    mainWindow.table.getModel().getValueAt(i, 1).equals(user.getSurname()) &&
+                    mainWindow.table.getModel().getValueAt(i, 2).equals(user.getBirthday()) &&
+                    mainWindow.table.getModel().getValueAt(i, 3).equals(user.getFamilyStatus()) &&
+                    mainWindow.table.getModel().getValueAt(i, 4).equals(user.getProfessionUser()) &&
+                    mainWindow.table.getModel().getValueAt(i, 5).equals(user.getEmail())) {
+
+               // mainWindow.table.removeRowSelectionInterval(i,i);
+               // mainWindow.createTable();
+            }
+        }
+    }
+
+    //поиск удаденных пользователей
+    public void comparisonUsers() throws ParseException, IOException, ClassNotFoundException {
+
+        Set<User>newCatalog=new HashSet<User>();//обновленный каталог
+        for(User user:newCatalog){
+            if(!operationsGUI.findUserInSet(catalog.getUsers(), user))//просмотр каталога, созданного перед сборкой таблицы
+                removeUserInTable(user);
+        }
+    }
+
     public void removeUser() throws Exception {
 
         catalog.setUsers(catalog.readCatalog());//считывание каталога
         boolean userIsFound=false;
         for (User user : catalog.getUsers()) {
-           // if (user.getName().equals(textName.getText()) && user.getEmail().equals(textEmail.getText())) {
             if (user.getName().equals(textName.getText()) && user.getLogin().equals(textLogin.getText())) {
                 catalog.getUsers().remove(user);
                 operationsXML.deleteDocument(operationsXML.findUserInXML(textName.getText(),textLogin.getText()));
+                comparisonUsers();
+
+
+               // mainWindow.table.setModel(mainWindow.table.getModel());
+               // mainWindow.table.repaint();
                 userIsFound=true;
                 break;
             }
@@ -55,19 +96,20 @@ public class DeleteUserWindow {
         elementsFrameGUI.createLabel(label,"Name:", mainBox);
         textName= new JTextField(50);
         elementsFrameGUI.createTextField(textName, mainBox);
-        elementsFrameGUI.createSpace(5, mainBox);
+        elementsFrameGUI.createSpace(8, mainBox);
 
         elementsFrameGUI.createLabel(label,"Login:", mainBox);
         textLogin=new JTextField(50);
         elementsFrameGUI.createTextField(textLogin, mainBox);
-        elementsFrameGUI.createSpace(8, mainBox);
+        elementsFrameGUI.createSpace(12, mainBox);
 
         JButton enterButton=elementsFrameGUI.createButton(button,"Remove selected user",mainBox);
+        enterButton.setMaximumSize(new Dimension(170, 35));
         elementsFrameGUI.createSpace(8,mainBox);
 
         removeUser.setContentPane(mainBox);
-        removeUser.setMaximumSize(new Dimension(400, 200));
-        removeUser.pack();
+        removeUser.setMinimumSize(new Dimension(400, 200));
+       // removeUser.pack();
         removeUser.setLocationRelativeTo(null);
         removeUser.setVisible(true);
 
@@ -77,9 +119,10 @@ public class DeleteUserWindow {
                   if (operationsGUI.checkNullTextField(textName.getText(), removeUser)&&
                           operationsGUI.checkNullTextField(textLogin.getText(), removeUser))
                         try {
+                          //  mainWindow.invalidate();
                             removeUser();
-                                mainWindow.mainWindow.dispose();
-                                mainWindow.mainWindow();
+                            //mainWindow.validate();
+                               // mainWindow.mainWindow.dispose();
                             removeUser.dispose();
                         }catch(NumberFormatException ex) {
                             JOptionPane.showMessageDialog(removeUser, message.getINCORRECT_TYPE_OF_DATA_PASSWORD());

@@ -6,6 +6,10 @@ import ConsoleOperations.OperationsUser;
 import ConsoleOperations.OperationsXML;
 import UsersData.FamilyStatus;
 import UsersData.User;
+import org.jdatepicker.JDateComponentFactory;
+import org.jdatepicker.JDatePicker;
+
+import java.util.Date;
 import java.util.regex.*;
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +27,7 @@ import java.text.SimpleDateFormat;
 public class NewUserWindow {
 
     private DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-    private String name,surname,birthday,profession,email;
+    private String name,surname,profession,email;
     private FamilyStatus familyStatus;
     private static Catalog catalog=new Catalog();
     private static ElementsFrameGUI elementsFrameGUI = new ElementsFrameGUI();
@@ -31,10 +35,11 @@ public class NewUserWindow {
     private static OperationsUser operationsUser=new OperationsUser();
     private static OperationsXML operationsXML=new OperationsXML();
     private static RegistrationWindow registrationWindow=new RegistrationWindow();
+    private static StartWindow startWindow=new StartWindow();
     private static Strings message=new Strings();
     private static MainWindow mainWindow=new MainWindow();
     final JFrame newUserPage=new JFrame("Create user page");
-    private  JTextField textBirthday;
+    private  JDatePicker textBirthday;
     private  JTextField textProfession;
     private  JTextField textEmail;
     private  Box mainBox;
@@ -49,6 +54,7 @@ public class NewUserWindow {
     private  String[] surnames;
     private JComboBox nameComboBox;//предлагаемый список уже существующих имен пользователей
     private JComboBox surnameComboBox;//предлагаемый список уже существующих фамилий пользователей
+
     public void setFamilyStatus(){
 
         if(textFamilyStatus.getSelectedItem().toString().equals("Married"))
@@ -59,27 +65,30 @@ public class NewUserWindow {
     }
 
     /*создание пользователя*/
-    public void createUser() throws ParseException, IOException, ClassNotFoundException {
+    public void createUser(String login,int password) throws ParseException, IOException, ClassNotFoundException {
 
         name=nameComboBox.getSelectedItem().toString();
         surname=surnameComboBox.getSelectedItem().toString();
-        birthday=textBirthday.getText();
+        String birthday=textBirthday.getModel().getDay() + "." + (textBirthday.getModel().getMonth()+1) + "." + textBirthday.getModel().getYear();
         setFamilyStatus();
         profession=textProfession.getText();
         email=textEmail.getText();
 
-        User user=operationsUser.createObjectUser(name,surname,birthday,familyStatus,profession,email);
-        user.setLogin(registrationWindow.getTextLogin().getText());
-        user.setPassword(Integer.parseInt(registrationWindow.getTextPassword().getText()));
+            User user = operationsUser.createObjectUser(name, surname, birthday, familyStatus, profession, email);
+            //user.setLogin(startWindow.getTextLogin().getText());
+        user.setLogin(login);
+            //user.setPassword(Integer.parseInt(startWindow.getTextPassword().getText()));
+        user.setPassword(password);
 
-        operationsXML.createDocumentXML(user,registrationWindow.textLogin.getText());
-        catalog.setUsers(catalog.readCatalog());//считывание каталога
-        catalog.getUsers().add(user);
-        catalog.writeCatalog(catalog.getUsers());//обновляем каталог
+            operationsXML.createDocumentXML(user, login);
+            catalog.setUsers(catalog.readCatalog());//считывание каталога
+            catalog.getUsers().add(user);
+            catalog.writeCatalog(catalog.getUsers());//обновляем каталог
+
     }
 
     /*считывание имен пользователей с каталога в массив*/
-    private void readNamesUsers(){
+      private void readNamesUsers(){
         names=new String[catalog.getUsers().size()];
         int count=0;
         for (User user:catalog.getUsers()) {
@@ -101,7 +110,7 @@ public class NewUserWindow {
     /*проверка вводимого E-mail*/
     private boolean checkEmailFormat(){
 
-        String regex = "(\\w+)@(\\w+\\.)(\\w+)(\\.\\w+)*" ;
+        String regex = "(\\w+)@(\\w+\\.)(\\w+)" ;
         Pattern p2 = Pattern. compile (regex);
         Matcher m2 = p2.matcher(textEmail.getText());
         if (!m2.matches()) {
@@ -112,12 +121,14 @@ public class NewUserWindow {
     }
 
     /*сборка окна создания пользователя*/
-    public void newUserWindow() throws IOException, ParseException {
+    public void newUserWindow(final String login, final int password) throws IOException, ParseException {
 
         newUserPage.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         newUserPage.setResizable(false);//запрет изменения размеров окна
         mainBox = Box.createVerticalBox();
-mainBox.setMaximumSize(new Dimension(200,500));
+        mainBox.setMaximumSize(new Dimension(200,500));
+
+        elementsFrameGUI.createSpace(3, mainBox);
         elementsFrameGUI.createLabel(label,"Name", mainBox);
         readNamesUsers();
         nameComboBox=new JComboBox(names);
@@ -133,7 +144,8 @@ mainBox.setMaximumSize(new Dimension(200,500));
         elementsFrameGUI.createSpace(5, mainBox);
 
         elementsFrameGUI.createLabel(label,"Birthday:", mainBox);
-        elementsFrameGUI.createDateField(mainBox);
+        textBirthday = new JDateComponentFactory().createJDatePicker();
+        elementsFrameGUI.createDateField(textBirthday, mainBox);
         elementsFrameGUI.createSpace(5, mainBox);
 
         elementsFrameGUI.createLabel(label,"FamilyStatus:", mainBox);
@@ -155,8 +167,7 @@ mainBox.setMaximumSize(new Dimension(200,500));
         elementsFrameGUI.createSpace(8,mainBox);
 
         newUserPage.setContentPane(mainBox);
-        //newUserPage.setMaximumSize(new Dimension(600,400));
-        newUserPage.pack();
+        newUserPage.setMinimumSize(new Dimension(250, 400));
         newUserPage.setLocationRelativeTo(null);
         newUserPage.setVisible(true);
 
@@ -165,12 +176,10 @@ mainBox.setMaximumSize(new Dimension(200,500));
                 try {
                     if (operationsGUI.checkNullTextField(nameComboBox.getSelectedItem().toString(), newUserPage) &&
                             operationsGUI.checkNullTextField(surnameComboBox.getSelectedItem().toString(), newUserPage)&&
-                            operationsGUI.checkNullTextField(textBirthday.getText(), newUserPage) &&
                             operationsGUI.checkNullTextField(textProfession.getText(), newUserPage) &&
                             checkEmailFormat())
-                            //operationsGUI.checkNullTextField(textEmail.getText(), newUserPage))
                         try {
-                            createUser();//поместить проверку на корректность вводимого поля даты
+                            createUser(login,password);
                             //обновление пока тупое:закрытие старой формы и открытие обновленной
                             mainWindow.mainWindow();
                             newUserPage.dispose();

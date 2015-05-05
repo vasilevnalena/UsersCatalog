@@ -14,6 +14,7 @@ public class ElementsFrameGUI extends JFrame{
     public void createLabel(JLabel label,String nameLabel, Box mainBox){
 
         label=new JLabel(nameLabel);
+        //mainBox.setAlignmentY(SwingConstants.LEFT);
         label.setAlignmentX(CENTER_ALIGNMENT);
         mainBox.add(label);
     }
@@ -21,7 +22,8 @@ public class ElementsFrameGUI extends JFrame{
     /*создание текстового поля*/
     public void createTextField(JTextField textField, Box mainBox){
 
-        textField.setMaximumSize(new Dimension(200, 30));
+        textField.setMaximumSize(new Dimension(200, 25));
+        textField.setAlignmentX(CENTER_ALIGNMENT);
         textField.setBorder(BorderFactory.createLineBorder(Color.GREEN));
         mainBox.add(textField);
     }
@@ -49,12 +51,17 @@ public class ElementsFrameGUI extends JFrame{
         mainBox.add(comboBox);
     }
 
-    public void createDateField(Box mainBox) {
+    /*создание календарного поля*/
+    public void createDateField(JDatePicker picker, Box mainBox) {
 
-        JDatePicker picker = new JDateComponentFactory().createJDatePicker();
         picker.setTextEditable(true);
         picker.setShowYearButtons(true);
-      mainBox.add((Component) picker);
+        mainBox.add((Component) picker);
+    }
 
+    public void createCheckBox(JCheckBox checkBox,String nameCheckBox, Box box){
+
+        checkBox=new JCheckBox(nameCheckBox);
+        box.add(checkBox);
     }
 }

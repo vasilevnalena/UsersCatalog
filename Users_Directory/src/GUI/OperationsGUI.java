@@ -2,7 +2,10 @@ package GUI;
 
 import ConstantStrings.Strings;
 import ConsoleOperations.Authorization;
+import UsersData.User;
+
 import javax.swing.*;
+import java.util.Set;
 
 /**
  * Created by 1231 on 20.04.2015.
@@ -22,6 +25,28 @@ public class OperationsGUI extends JFrame{
         else return true;
     }
 
+    /*проверка на существование пользователя в каталоге(1)*/
+    public boolean findUserInSet(Set<User> userSet, User userFind){
+
+        boolean userIsFind=false;
+        for (User user: userSet){
+            if (userFind.getLogin().equals(user.getLogin())&& userFind.getPassword()==user.getPassword())
+            { userIsFind=true; break;}
+        }
+        return userIsFind;
+    }
+
+    /*проверка на существование пользователя в каталоге(2)*/
+    public boolean findUserInSet(Set<User> userSet, String login, int password){
+
+        boolean userIsFind=false;
+        for (User user: userSet){
+            if (user.getLogin().equals(login)&& user.getPassword()==password)
+            { userIsFind=true; break;}
+        }
+        return userIsFind;
+    }
+
     /*авторизация пользователя*/
    public void authorization(String login, int password,JFrame frame) throws Exception {
 
@@ -39,9 +64,9 @@ public class OperationsGUI extends JFrame{
     public void registration(String login, int password,JFrame frame) throws Exception {
 
         if (authorization.existUser(login, password) == false) {
-                newUserWindow.newUserWindow();
-                //frame.setVisible(false);
-            frame.dispose();
+                newUserWindow.newUserWindow(login,password);
+                frame.setVisible(false);
+          //  frame.dispose();
         } else {
             JOptionPane.showMessageDialog(frame, message.getREGISTRATION_NOT_EXECUTED());
         }
