@@ -180,8 +180,7 @@ public class NewUserWindow {
                             checkEmailFormat())
                         try {
                             createUser(login,password);
-                            //обновление пока тупое:закрытие старой формы и открытие обновленной
-                            mainWindow.mainWindow();
+                            mainWindow.refreshTable();
                             newUserPage.dispose();
                         } catch (NumberFormatException ex) {
                             JOptionPane.showMessageDialog(newUserPage, message.getINCORRECT_TYPE_OF_DATA_PASSWORD());

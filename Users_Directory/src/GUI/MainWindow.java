@@ -24,7 +24,7 @@ public class MainWindow extends JFrame implements ActionListener {
     public static JFrame mainWindow;
     private static JMenuBar menuBar;
     private static DeleteUserWindow deleteUserWindow=new DeleteUserWindow();
-    private String[] columnNames = {
+    private static String[] columnNames = {
             "Name",
             "Surname",
             "Birthday",
@@ -35,6 +35,7 @@ public class MainWindow extends JFrame implements ActionListener {
     private static Catalog catalog=new Catalog();
     private static String[][] data;
     static JTable table;
+    EditUserDataWindow editUserDataWindow=new EditUserDataWindow();
 
     /*заполнение таблицы данными*/
     private static void fillTable() throws IOException, ClassNotFoundException, ParseException {
@@ -68,7 +69,7 @@ public class MainWindow extends JFrame implements ActionListener {
     /*создание менюшки */
     private void createMenu(){
         String[] item1={"Close"};
-        String[] item2={"Create user","Edit user's data","Delete user","Refresh"};
+        String[] item2={"Create user","Edit user's data","Delete user"};
         String[] item3={"Get help"};
 
         createButtonMenu("File", item1);
@@ -91,28 +92,43 @@ public class MainWindow extends JFrame implements ActionListener {
         mainWindow.getContentPane().add(scrollPane);
     }
 
+    public static void refreshTable() throws ParseException, IOException, ClassNotFoundException {
+
+        catalog.readCatalog();
+        fillTable();
+        CatalogTableModel catalogTableModel=new CatalogTableModel(data, columnNames);
+        table.setModel(catalogTableModel);
+    }
+
     /*операции для кнопок менюшки*/
     public void actionPerformed(ActionEvent e) {
         String command=e.getActionCommand();
         if (command=="Close") System.exit(0);
         if (command=="Create user"){
             try {
-                registrationWindow.registrationPage.dispose();
-               // mainWindow.dispose();//для временного обновления таблицы
+                //registrationWindow.registrationPage.dispose();
                 registrationWindow.registrationWindow();
+
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+
+        }
+        if(command=="Delete user"){
+            try {
+                deleteUserWindow.deleteUserWindow();
+           } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+        if(command=="Edit user's data"){
+
+            try {
+                editUserDataWindow.editUsersData();
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
         }
-        if(command=="Delete user"){
-           // try {
-               // deleteUserWindow.deleteUserWindow();
-
-          //  } catch (IOException e1) {
-              //  e1.printStackTrace();
-            //}
-        }
-
     }
 
     /*создание главного окна */

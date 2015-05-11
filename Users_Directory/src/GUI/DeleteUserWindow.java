@@ -38,33 +38,6 @@ public class DeleteUserWindow extends JFrame {
     private static Strings message=new Strings();
     private static MainWindow mainWindow=new MainWindow();
 
-
-
-    private void removeUserInTable(User user) throws ParseException, IOException, ClassNotFoundException {
-        for (int i = 0; i < mainWindow.table.getRowCount(); i++) {
-                if (mainWindow.table.getModel().getValueAt(i, 0).equals(user.getName()) &&
-                    mainWindow.table.getModel().getValueAt(i, 1).equals(user.getSurname()) &&
-                    mainWindow.table.getModel().getValueAt(i, 2).equals(user.getBirthday()) &&
-                    mainWindow.table.getModel().getValueAt(i, 3).equals(user.getFamilyStatus()) &&
-                    mainWindow.table.getModel().getValueAt(i, 4).equals(user.getProfessionUser()) &&
-                    mainWindow.table.getModel().getValueAt(i, 5).equals(user.getEmail())) {
-
-               // mainWindow.table.removeRowSelectionInterval(i,i);
-               // mainWindow.createTable();
-            }
-        }
-    }
-
-    //поиск удаденных пользователей
-    public void comparisonUsers() throws ParseException, IOException, ClassNotFoundException {
-
-        Set<User>newCatalog=new HashSet<User>();//обновленный каталог
-        for(User user:newCatalog){
-            if(!operationsGUI.findUserInSet(catalog.getUsers(), user))//просмотр каталога, созданного перед сборкой таблицы
-                removeUserInTable(user);
-        }
-    }
-
     public void removeUser() throws Exception {
 
         catalog.setUsers(catalog.readCatalog());//считывание каталога
@@ -73,11 +46,6 @@ public class DeleteUserWindow extends JFrame {
             if (user.getName().equals(textName.getText()) && user.getLogin().equals(textLogin.getText())) {
                 catalog.getUsers().remove(user);
                 operationsXML.deleteDocument(operationsXML.findUserInXML(textName.getText(),textLogin.getText()));
-                comparisonUsers();
-
-
-               // mainWindow.table.setModel(mainWindow.table.getModel());
-               // mainWindow.table.repaint();
                 userIsFound=true;
                 break;
             }
@@ -109,7 +77,6 @@ public class DeleteUserWindow extends JFrame {
 
         removeUser.setContentPane(mainBox);
         removeUser.setMinimumSize(new Dimension(400, 200));
-       // removeUser.pack();
         removeUser.setLocationRelativeTo(null);
         removeUser.setVisible(true);
 
@@ -119,10 +86,8 @@ public class DeleteUserWindow extends JFrame {
                   if (operationsGUI.checkNullTextField(textName.getText(), removeUser)&&
                           operationsGUI.checkNullTextField(textLogin.getText(), removeUser))
                         try {
-                          //  mainWindow.invalidate();
                             removeUser();
-                            //mainWindow.validate();
-                               // mainWindow.mainWindow.dispose();
+                            mainWindow.refreshTable();
                             removeUser.dispose();
                         }catch(NumberFormatException ex) {
                             JOptionPane.showMessageDialog(removeUser, message.getINCORRECT_TYPE_OF_DATA_PASSWORD());

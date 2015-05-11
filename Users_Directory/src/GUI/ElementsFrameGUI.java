@@ -59,9 +59,4 @@ public class ElementsFrameGUI extends JFrame{
         mainBox.add((Component) picker);
     }
 
-    public void createCheckBox(JCheckBox checkBox,String nameCheckBox, Box box){
-
-        checkBox=new JCheckBox(nameCheckBox);
-        box.add(checkBox);
-    }
 }

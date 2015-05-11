@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+  <name name="rexxy" />
+  <surname surname="doggs" />
+  <birthday birthday="11.05.2015" />
+  <familyStatus familyStatus="MARRIED" />
+  <profession profession="no" />
+  <login login="3456" />
+  <password password="234" />
+  <email email="rex@dog.dog" />
+</user>
