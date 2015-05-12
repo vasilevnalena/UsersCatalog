@@ -85,13 +85,13 @@ public class DeleteUserWindow extends JFrame {
                 try {
                   if (operationsGUI.checkNullTextField(textName.getText(), removeUser)&&
                           operationsGUI.checkNullTextField(textLogin.getText(), removeUser))
-                        try {
+                       // try {
                             removeUser();
                             mainWindow.refreshTable();
                             removeUser.dispose();
-                        }catch(NumberFormatException ex) {
-                            JOptionPane.showMessageDialog(removeUser, message.getINCORRECT_TYPE_OF_DATA_PASSWORD());
-                        }
+                        //}catch(NumberFormatException ex) {
+                          // JOptionPane.showMessageDialog(removeUser, message.getINCORRECT_TYPE_OF_DATA_PASSWORD());
+                        //}
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 } catch (Exception e1) {
@@ -99,5 +99,5 @@ public class DeleteUserWindow extends JFrame {
                 }
             }
         });
-    }
+        }
 }

@@ -1,9 +1,11 @@
 package GUI;
 
+import ConsoleOperations.OperationsXML;
 import ConstantStrings.Strings;
+import UsersData.User;
 import org.jdatepicker.JDateComponentFactory;
 import org.jdatepicker.JDatePicker;
-
+import Catalog.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * Created by 1231 on 27.04.2015.
@@ -20,7 +23,8 @@ public class EditUserDataWindow extends JFrame{
     private static ElementsFrameGUI elementsFrameGUI = new ElementsFrameGUI();
     private static Strings message = new Strings();
     private static OperationsGUI operationsGUI = new OperationsGUI();
-    private static NewUserWindow newUserWindow=new NewUserWindow();
+    private static OperationsXML operationsXML=new OperationsXML();
+    private static Catalog catalog=new Catalog();
     private static MainWindow mainWindow=new MainWindow();
     final JFrame frame = new JFrame("Choose user's data to change");
     private Box mainBox;
@@ -69,7 +73,7 @@ public class EditUserDataWindow extends JFrame{
     }
 
     /*окно получения доступа к редактированию данных пользователя*/
-   /* public void enterEditUserWindow() throws IOException {
+    public void enterEditUserWindow() throws IOException {
 
         mainBox = Box.createVerticalBox();
         changeUser.setDefaultCloseOperation(changeUser.DISPOSE_ON_CLOSE);
@@ -85,7 +89,7 @@ public class EditUserDataWindow extends JFrame{
         elementsFrameGUI.createTextField(textLogin, mainBox);
         elementsFrameGUI.createSpace(12, mainBox);
 
-        JButton enterButton=elementsFrameGUI.createButton(button,"Remove selected user",mainBox);
+        JButton enterButton=elementsFrameGUI.createButton(button,"Next",mainBox);
         enterButton.setMaximumSize(new Dimension(170, 35));
         elementsFrameGUI.createSpace(8,mainBox);
 
@@ -99,21 +103,37 @@ public class EditUserDataWindow extends JFrame{
                 try {
                     if (operationsGUI.checkNullTextField(textName.getText(), changeUser)&&
                             operationsGUI.checkNullTextField(textLogin.getText(), changeUser))
-                        try {
-                            //...
-                            mainWindow.refreshTable();
-                            changeUser.dispose();
-                        }catch(NumberFormatException ex) {
-                            JOptionPane.showMessageDialog(changeUser, message.getINCORRECT_TYPE_OF_DATA_PASSWORD());
-                        }
-                } catch (IOException e1) {
-                    e1.printStackTrace();
+                            if(isExistChangeUser()) {
+                                editUsersData();
+                                changeUser.dispose();
+                            }
+              //  } catch (IOException e1) {
+                //    e1.printStackTrace();
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
             }
         });
-    }*/
+    }
+
+    public boolean isExistChangeUser() throws Exception {
+
+        catalog.setUsers(catalog.readCatalog());//считывание каталога
+        boolean userIsFound=false;
+
+        for (User user : catalog.getUsers()) {
+            if (user.getName().equals(textName.getText()) && user.getLogin().equals(textLogin.getText())) {
+                userIsFound=true;
+                break;
+            }
+        }
+        if(!userIsFound) {
+            JOptionPane.showMessageDialog(changeUser, message.getUSER_NOT_FOUND());
+            return false;
+        }
+            else return true;
+
+    }
 
     /*сборка окна с изменяемыми данными пользователя*/
     public void editUsersData() throws IOException {
@@ -214,7 +234,6 @@ public class EditUserDataWindow extends JFrame{
 
     public static void main(String[] args) throws IOException {
         EditUserDataWindow startWindow=new EditUserDataWindow();
-        startWindow.editUsersData();
+        startWindow.enterEditUserWindow();
     }
 }
-

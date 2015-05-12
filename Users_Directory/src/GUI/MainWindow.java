@@ -20,6 +20,7 @@ import java.util.Vector;
 public class MainWindow extends JFrame implements ActionListener {
 
     private static DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+    private static EditUserDataWindow editUserDataWindow=new EditUserDataWindow();
     private RegistrationWindow registrationWindow=new RegistrationWindow();
     public static JFrame mainWindow;
     private static JMenuBar menuBar;
@@ -35,7 +36,7 @@ public class MainWindow extends JFrame implements ActionListener {
     private static Catalog catalog=new Catalog();
     private static String[][] data;
     static JTable table;
-    EditUserDataWindow editUserDataWindow=new EditUserDataWindow();
+    //EditUserDataWindow editUserDataWindow=new EditUserDataWindow();
 
     /*заполнение таблицы данными*/
     private static void fillTable() throws IOException, ClassNotFoundException, ParseException {
@@ -124,7 +125,7 @@ public class MainWindow extends JFrame implements ActionListener {
         if(command=="Edit user's data"){
 
             try {
-                editUserDataWindow.editUsersData();
+                editUserDataWindow.enterEditUserWindow();
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
