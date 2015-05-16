@@ -54,7 +54,7 @@ public class OperationsGUI extends JFrame{
             //переход к работе с каталогом:
             mainWindow.mainWindow();
             frame.setVisible(false);
-            //frame.dispose();
+            //changeUserWindow.dispose();
         } else {
             JOptionPane.showMessageDialog(frame, message.getAUTHORIZATION_NOT_EXECUTED());
         }
@@ -66,7 +66,7 @@ public class OperationsGUI extends JFrame{
         if (authorization.existUser(login, password) == false) {
                 newUserWindow.newUserWindow(login,password);
                 frame.setVisible(false);
-          //  frame.dispose();
+          //  changeUserWindow.dispose();
         } else {
             JOptionPane.showMessageDialog(frame, message.getREGISTRATION_NOT_EXECUTED());
         }

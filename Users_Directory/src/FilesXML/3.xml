@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <user>
-  <name name="3" />
-  <surname surname="3" />
-  <birthday birthday="11.05.2015" />
+  <name name="Nyusha" />
+  <surname surname="Nyushina" />
+  <birthday birthday="06.05.1998" />
   <familyStatus familyStatus="MARRIED" />
-  <profession profession="3" />
-  <login login="3" />
-  <password password="3" />
-  <email email="f@d.ujh" />
+  <profession profession="singer" />
+  <login login="nyusha" />
+  <password password="123" />
+  <email email="nyusha@singer.ru" />
 </user>

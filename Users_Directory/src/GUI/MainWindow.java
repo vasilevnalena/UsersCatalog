@@ -95,7 +95,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
     public static void refreshTable() throws ParseException, IOException, ClassNotFoundException {
 
-        catalog.readCatalog();
+        catalog.setUsers(catalog.readCatalog());
         fillTable();
         CatalogTableModel catalogTableModel=new CatalogTableModel(data, columnNames);
         table.setModel(catalogTableModel);

@@ -1,11 +1,19 @@
 package GUI;
 
+import ConsoleOperations.OperationsUser;
+import ConsoleOperations.OperationsXML;
 import ConstantStrings.Strings;
+import UsersData.FamilyStatus;
+import UsersData.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 /**
  * Created by 1231 on 13.04.2015.
  */
@@ -17,7 +25,9 @@ public class StartWindow extends JFrame {
 
     private static ElementsFrameGUI elementsFrameGUI = new ElementsFrameGUI();
     private static Strings message=new Strings();
+    private static OperationsUser operationsUser=new OperationsUser();
     private static OperationsGUI operationsGUI =new OperationsGUI();
+    private static OperationsXML operationsXML =new OperationsXML();
     final JFrame startPage = new JFrame("Start Page");
     private static JTextField textLogin=new JTextField(50);
     private static JTextField textPassword=new JPasswordField(50);
@@ -102,7 +112,7 @@ public class StartWindow extends JFrame {
         });
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ParseException {
         StartWindow startWindow=new StartWindow();
         startWindow.createFrame();
     }

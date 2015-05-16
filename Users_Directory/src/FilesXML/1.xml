@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <user>
   <name name="1" />
-  <surname surname="1" />
+  <surname surname="лошадиная" />
   <birthday birthday="11.05.2015" />
   <familyStatus familyStatus="MARRIED" />
-  <profession profession="no" />
+  <profession profession="NoNoNo" />
   <login login="1" />
   <password password="1" />
   <email email="f@k.jgff" />

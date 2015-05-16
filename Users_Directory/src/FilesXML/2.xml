@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <user>
   <name name="2" />
-  <surname surname="2" />
+  <surname surname="surname" />
   <birthday birthday="11.05.2015" />
   <familyStatus familyStatus="MARRIED" />
   <profession profession="2" />

@@ -1,7 +1,9 @@
 package GUI;
 
+import ConsoleOperations.OperationsUser;
 import ConsoleOperations.OperationsXML;
 import ConstantStrings.Strings;
+import UsersData.FamilyStatus;
 import UsersData.User;
 import org.jdatepicker.JDateComponentFactory;
 import org.jdatepicker.JDatePicker;
@@ -13,38 +15,51 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
-import java.util.Set;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by 1231 on 27.04.2015.
  */
 public class EditUserDataWindow extends JFrame{
 
+    private DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
     private static ElementsFrameGUI elementsFrameGUI = new ElementsFrameGUI();
     private static Strings message = new Strings();
     private static OperationsGUI operationsGUI = new OperationsGUI();
+    private static OperationsUser operationsUser=new OperationsUser();
     private static OperationsXML operationsXML=new OperationsXML();
     private static Catalog catalog=new Catalog();
     private static MainWindow mainWindow=new MainWindow();
-    final JFrame frame = new JFrame("Choose user's data to change");
-    private Box mainBox;
-    private JTextField textField;
-    private JDatePicker textBirthday;
+    JFrame changeUserWindow;// = new JFrame("Choose user's data to change");
+    //private Box mainBox;
     private  static String[] familyStatusVariable = {
             "Married",
             "Not married"
     };
-    private Box leftBox=Box.createVerticalBox();
-    private Box rightBox=Box.createVerticalBox();
+    private Box leftBox;
+    private Box rightBox;
+    private Box rowBox;
     private JButton button;
     private JCheckBox checkBox;
     private JCheckBox birthdayCheckBox;
     private JCheckBox familyStatusCheckBox;
-    private JComboBox familyStatusComboBox;
-    final JFrame changeUser =new JFrame("Changing user");
+    final JFrame accessToChangeUserWindow =new JFrame("Changing user");
     private JTextField textName;
+    private JTextField textSurname;
+    private JDatePicker textBirthday;
+    private JTextField textProfession;
+    private JTextField textEmail;
     private JTextField textLogin;
+    private JTextField textPassword;
+    private JComboBox familyStatusComboBox;
     private JLabel label;
+    private JTextField textNamePass;
+    private JTextField textLoginPass;
+    private Box mainBox;
+    private String nameUserSaved;
+    private String loginUserSaved;
+    private FamilyStatus familyStatus;
 
     /*строка чекбокс+текстовое поле(активация/деактивация выбранного атрибута)*/
     private void createRowAttribute(JCheckBox checkBox,String nameCheckBox, final JTextField textField){
@@ -76,39 +91,41 @@ public class EditUserDataWindow extends JFrame{
     public void enterEditUserWindow() throws IOException {
 
         mainBox = Box.createVerticalBox();
-        changeUser.setDefaultCloseOperation(changeUser.DISPOSE_ON_CLOSE);
-        changeUser.setResizable(false);//запрет изменения размеров окна
+        leftBox=Box.createVerticalBox();
+        rightBox=Box.createVerticalBox();
+        accessToChangeUserWindow.setDefaultCloseOperation(accessToChangeUserWindow.DISPOSE_ON_CLOSE);
+        accessToChangeUserWindow.setResizable(false);//запрет изменения размеров окна
 
-        elementsFrameGUI.createLabel(label,"Name:", mainBox);
-        textName= new JTextField(50);
-        elementsFrameGUI.createTextField(textName, mainBox);
+        elementsFrameGUI.createLabel(label, "Name:", mainBox);
+        textNamePass= new JTextField(50);
+        elementsFrameGUI.createTextField(textNamePass, mainBox);
         elementsFrameGUI.createSpace(8, mainBox);
 
-        elementsFrameGUI.createLabel(label,"Login:", mainBox);
-        textLogin=new JTextField(50);
-        elementsFrameGUI.createTextField(textLogin, mainBox);
+        elementsFrameGUI.createLabel(label, "Login:", mainBox);
+        textLoginPass=new JTextField(50);
+        elementsFrameGUI.createTextField(textLoginPass, mainBox);
         elementsFrameGUI.createSpace(12, mainBox);
 
         JButton enterButton=elementsFrameGUI.createButton(button,"Next",mainBox);
         enterButton.setMaximumSize(new Dimension(170, 35));
-        elementsFrameGUI.createSpace(8,mainBox);
+        elementsFrameGUI.createSpace(8, mainBox);
 
-        changeUser.setContentPane(mainBox);
-        changeUser.setMinimumSize(new Dimension(400, 200));
-        changeUser.setLocationRelativeTo(null);
-        changeUser.setVisible(true);
+        accessToChangeUserWindow.setContentPane(mainBox);
+        accessToChangeUserWindow.setMinimumSize(new Dimension(400, 200));
+        accessToChangeUserWindow.setLocationRelativeTo(null);
+        accessToChangeUserWindow.setVisible(true);
 
         enterButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    if (operationsGUI.checkNullTextField(textName.getText(), changeUser)&&
-                            operationsGUI.checkNullTextField(textLogin.getText(), changeUser))
+                    if (operationsGUI.checkNullTextField(textNamePass.getText(), accessToChangeUserWindow)&&
+                            operationsGUI.checkNullTextField(textLoginPass.getText(), accessToChangeUserWindow))
                             if(isExistChangeUser()) {
+                                nameUserSaved=textNamePass.getText();
+                                loginUserSaved=textLoginPass.getText();
                                 editUsersData();
-                                changeUser.dispose();
+                                accessToChangeUserWindow.dispose();
                             }
-              //  } catch (IOException e1) {
-                //    e1.printStackTrace();
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
@@ -116,38 +133,40 @@ public class EditUserDataWindow extends JFrame{
         });
     }
 
+    /*проверка на существование пользователя по имени/логину */
     public boolean isExistChangeUser() throws Exception {
 
         catalog.setUsers(catalog.readCatalog());//считывание каталога
         boolean userIsFound=false;
 
         for (User user : catalog.getUsers()) {
-            if (user.getName().equals(textName.getText()) && user.getLogin().equals(textLogin.getText())) {
+            if (user.getName().equals(textNamePass.getText()) && user.getLogin().equals(textLoginPass.getText())) {
                 userIsFound=true;
                 break;
             }
         }
         if(!userIsFound) {
-            JOptionPane.showMessageDialog(changeUser, message.getUSER_NOT_FOUND());
+            JOptionPane.showMessageDialog(accessToChangeUserWindow, message.getUSER_NOT_FOUND());
             return false;
         }
             else return true;
-
     }
 
-    /*сборка окна с изменяемыми данными пользователя*/
+    /*окно выбора изменяемых данных пользователя*/
     public void editUsersData() throws IOException {
 
-        frame.setDefaultCloseOperation(frame.DISPOSE_ON_CLOSE);
-        frame.setResizable(false);//запрет изменения размеров окна
+        changeUserWindow = new JFrame("Choose user's data to change");
+        changeUserWindow.setDefaultCloseOperation(changeUserWindow.DISPOSE_ON_CLOSE);
+        changeUserWindow.setResizable(false);//запрет изменения размеров окна
 
+        leftBox=Box.createVerticalBox();
+        rightBox=Box.createVerticalBox();
         mainBox = Box.createVerticalBox();
+        textName = new JTextField(50);
+        createRowAttribute(checkBox,"Name", textName);
 
-        textField = new JTextField(50);
-        createRowAttribute(checkBox,"Name", textField);
-
-        textField=new JTextField(50);
-        createRowAttribute(checkBox,"Surname", textField);
+        textSurname=new JTextField(50);
+        createRowAttribute(checkBox,"Surname", textSurname);
 
         birthdayCheckBox=new JCheckBox("Birthday");
         leftBox.add(birthdayCheckBox);
@@ -157,7 +176,7 @@ public class EditUserDataWindow extends JFrame{
         elementsFrameGUI.createDateField(textBirthday, rightBox);
         textBirthday.setTextEditable(false);
         textBirthday.getModel().setSelected(false);
-        elementsFrameGUI.createSpace(6,rightBox);
+        elementsFrameGUI.createSpace(6, rightBox);
 
         familyStatusCheckBox=new JCheckBox("FamilyStatus");
         leftBox.add(familyStatusCheckBox);
@@ -167,28 +186,34 @@ public class EditUserDataWindow extends JFrame{
         familyStatusComboBox.setEnabled(false);
         elementsFrameGUI.createSpace(6, rightBox);
 
-        textField = new JTextField(50);
-        createRowAttribute(checkBox,"Profession", textField);
+        textProfession = new JTextField(50);
+        createRowAttribute(checkBox,"Profession", textProfession);
 
-        textField = new JTextField(50);
-        createRowAttribute(checkBox,"E-mail", textField);
+        textEmail = new JTextField(50);
+        createRowAttribute(checkBox,"E-mail", textEmail);
 
-        textField = new JTextField(50);
-        createRowAttribute(checkBox,"Login", textField);
+        textLogin = new JTextField(50);
+        createRowAttribute(checkBox,"Login", textLogin);
 
-        textField = new JPasswordField(50);
-        createRowAttribute(checkBox,"Password", textField);
+        textPassword = new JPasswordField(50);
+        createRowAttribute(checkBox,"Password", textPassword);
 
         Box rowBox = Box.createHorizontalBox();
         rowBox.add(leftBox);
         rowBox.add(rightBox);
         mainBox.add(rowBox);
+
         JButton enterButton = elementsFrameGUI.createButton(button, "Change chosen attributes", mainBox);
         elementsFrameGUI.createSpace(8, mainBox);
-        frame.getContentPane().add(mainBox);
-        frame.setMinimumSize(new Dimension(400, 400));
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        changeUserWindow.getContentPane().add(mainBox);
+
+        changeUserWindow.setMinimumSize(new Dimension(400, 400));
+        changeUserWindow.setLocationRelativeTo(null);
+        changeUserWindow.setVisible(true);
+        //сброс чекбоксов
+//        checkBox.setSelected(false);
+       // birthdayCheckBox.setSelected(false);
+       // familyStatusCheckBox.setSelected(false);
 
         birthdayCheckBox.addItemListener(new ItemListener() {
             @Override
@@ -201,6 +226,8 @@ public class EditUserDataWindow extends JFrame{
                     textBirthday.setTextEditable(false);
                     textBirthday.getModel().setSelected(false);
                 }
+
+
             }
         });
 
@@ -219,11 +246,9 @@ public class EditUserDataWindow extends JFrame{
        enterButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
+                    setChangingDataUser();
+                    changeUserWindow.dispose();
 
-                    //...
-                    mainWindow.refreshTable();
-                   //  } catch (IOException e1) {
-                     //  e1.printStackTrace();
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
@@ -232,8 +257,41 @@ public class EditUserDataWindow extends JFrame{
 
     }
 
-    public static void main(String[] args) throws IOException {
-        EditUserDataWindow startWindow=new EditUserDataWindow();
-        startWindow.enterEditUserWindow();
+    /*применение выбранных атрибутов*/
+    public void setChangingDataUser() throws Exception {
+
+        Catalog.setUsers(catalog.readCatalog());//считывание каталога
+
+        String nameXML=operationsXML.findUserInXML(nameUserSaved,loginUserSaved).getName();
+        int i = nameXML.lastIndexOf('.');
+        if (i != -1) {
+            nameXML = nameXML.substring(0, i);
+        }
+
+       if (textBirthday.isTextEditable())operationsUser.findUserInSet(nameUserSaved,loginUserSaved).setBirthday(format.parse(textBirthday.getModel().getDay() + "." + (textBirthday.getModel().getMonth() + 1) + "." + textBirthday.getModel().getYear()));
+          if (familyStatusComboBox.isEnabled()) {
+                 if(familyStatusComboBox.getSelectedItem().toString().equals("Married"))
+                     familyStatus=FamilyStatus.MARRIED;
+              else
+                 if(familyStatusComboBox.getSelectedItem().toString().equals("Not married"))
+                     familyStatus=FamilyStatus.NOT_MARRIED;
+            operationsUser.findUserInSet(nameUserSaved,loginUserSaved).setFamilyStatus(familyStatus);
+        }
+        if (textEmail.isEnabled())operationsUser.findUserInSet(nameUserSaved,loginUserSaved).setEmail(textEmail.getText());
+        if (textProfession.isEnabled())operationsUser.findUserInSet(nameUserSaved,loginUserSaved).setProfession(textProfession.getText());
+        if (textPassword.isEnabled())operationsUser.findUserInSet(nameUserSaved,loginUserSaved).setPassword(Integer.parseInt(textPassword.getText()));
+        if (textLogin.isEnabled()) {
+            operationsUser.findUserInSet(nameUserSaved, loginUserSaved).setLogin(textLogin.getText());
+            loginUserSaved=textLogin.getText();
+        }
+        if (textName.isEnabled()){
+            operationsUser.findUserInSet(nameUserSaved,loginUserSaved).setName(textName.getText());
+            nameUserSaved=textName.getText();
+        }
+        if (textSurname.isEnabled())operationsUser.findUserInSet(nameUserSaved,loginUserSaved).setSurname(textSurname.getText());
+
+        catalog.writeCatalog(catalog.getUsers());
+        operationsXML.createDocumentXML(operationsUser.findUserInSet(nameUserSaved,loginUserSaved), nameXML);
+        mainWindow.refreshTable();
     }
 }
